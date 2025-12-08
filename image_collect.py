@@ -6,7 +6,7 @@ import os
 main_folder = "locations/"
 location = "tsai_city/"
 location_number = "waypoint_1/"
-angle = "angle_up/"
+angle = "angle_up/" # flat, angle_up, angle_down
 
 os.makedirs(main_folder + location + location_number + angle, exist_ok=True)
 
