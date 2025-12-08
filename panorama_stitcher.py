@@ -70,7 +70,11 @@ def main():
     panorama = stitch_panorama(images)
 
     # Save
-    cv2.imwrite(output_file, panorama)
+    success = cv2.imwrite(output_file, panorama)
+    if not success:
+        print(f"Error: Failed to save panorama to {output_file}")
+        print("Check if the path is valid and you have write permissions.")
+        sys.exit(1)
     print(f"Saved: {output_file} ({panorama.shape[1]}x{panorama.shape[0]})")
 
 
