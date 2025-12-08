@@ -27,10 +27,14 @@ export default function PanoramaViewer({ image }: { image: string }) {
         type: "equirectangular",
         panorama: image,
         autoLoad: true,
-        autoRotate: -2,
+        pitch: 0,
+        minPitch: 0,
+        maxPitch: 0,
+        hfov: 100,
+        showControls: false,
       });
     };
   }, [image]);
 
-  return <div ref={viewerRef} style={{ width: "100vw", height: "100vh" }} />;
+  return <div ref={viewerRef} className="w-full h-full" />;
 }
