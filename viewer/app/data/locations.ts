@@ -6,7 +6,7 @@ export const YALE_LOCATIONS: Location[] = [
     name: "Jonathan Edwards Courtyard",
     coordinates: { lat: 41.309115, lng: -72.930515 },
 
-    panoramaPath: "/panoramas/courtyard_panorama.jpg",
+    panoramaPath: "/panoramas/je_courtyard_panorama.jpg",
   },
   // Add more locations as panoramas are created:
   // {
