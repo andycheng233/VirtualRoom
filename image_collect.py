@@ -6,8 +6,9 @@ import os
 main_folder = "locations/"
 location = "tsai_city/"
 location_number = "waypoint_2/"
+angle = "flat/"
 
-os.makedirs(main_folder + location + location_number, exist_ok=True)
+os.makedirs(main_folder + location + location_number + angle, exist_ok=True)
 
 image_frames, depth_frames = [], []
 first_frame, latest_frame = None, None
@@ -74,8 +75,8 @@ try:
         if key == 27:  # ESC
             print(len(image_frames))
             for i in range(len(image_frames)):
-                cv2.imwrite(main_folder + location + location_number + "rgb_" + str(i) + ".png", image_frames[i])
-                np.save(main_folder + location + location_number + "depth_" + str(i) + ".npy", depth_frames[i])
+                cv2.imwrite(main_folder + location + location_number + angle + "rgb_" + str(i) + ".png", image_frames[i])
+                np.save(main_folder + location + location_number + angle + "depth_" + str(i) + ".npy", depth_frames[i])
             break
         elif key == ord(" "):
             print("Added Color and Depth Image")
