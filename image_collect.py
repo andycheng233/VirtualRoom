@@ -5,8 +5,8 @@ import os
 
 main_folder = "locations/"
 location = "tsai_city/"
-location_number = "waypoint_2/"
-angle = "flat/"
+location_number = "waypoint_1/"
+angle = "angle_up/"
 
 os.makedirs(main_folder + location + location_number + angle, exist_ok=True)
 
@@ -42,11 +42,15 @@ except Exception as e:
     print("Error starting pipeline:", e)
     raise
 
+align_to = rs.stream.color
+align = rs.align(align_to)
+
 try:
     while True:
         frames = pipeline.wait_for_frames()
-        depth_frame = frames.get_depth_frame()
-        color_frame = frames.get_color_frame()
+        aligned_frames = align.process(frames)
+        depth_frame = aligned_frames.get_depth_frame()
+        color_frame = aligned_frames.get_color_frame()
 
         if not depth_frame or not color_frame:
             print("Missing depth or color frame, skipping...")
@@ -80,11 +84,11 @@ try:
             break
         elif key == ord(" "):
             print("Added Color and Depth Image")
-            image_frames.append(color_image)
-            depth_frames.append(depth_image)
+            image_frames.append(color_image.copy())
+            depth_frames.append(depth_image.copy())
             if len(image_frames) == 1:
-                first_frame = color_image
-            latest_frame = color_image
+                first_frame = color_image.copy()
+            latest_frame = color_image.copy()
 
 finally:
     pipeline.stop()
