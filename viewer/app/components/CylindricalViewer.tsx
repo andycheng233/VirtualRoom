@@ -107,8 +107,9 @@ function CylinderPanorama({ imageUrl }: CylinderPanoramaProps) {
     typeof (texture.image as any).width === "number" &&
     typeof (texture.image as any).height === "number"
   ) {
-    imageAspect = (texture.image as { width: number; height: number }).width /
-                  (texture.image as { width: number; height: number }).height;
+    imageAspect =
+      (texture.image as { width: number; height: number }).width /
+      (texture.image as { width: number; height: number }).height;
   }
   // The circumference is 2*PI*radius, and this maps to the image width
   // So height = circumference / aspectRatio

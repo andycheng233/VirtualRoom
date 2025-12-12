@@ -11,7 +11,8 @@ export const YALE_LOCATIONS: Location[] = [
     id: "becton-center",
     name: "Becton Center",
     coordinates: { lat: 41.312466, lng: -72.9251862 },
-    panoramaPath: "/panoramas/becton_pano.jpg",
+    // panoramaPath: "/panoramas/becton_pano.jpg",
+    panoramaPath: "/panoramas/smart_becton_flat_pano9.png",
   },
 ];
 
