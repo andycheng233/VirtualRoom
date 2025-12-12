@@ -1,6 +1,19 @@
 #!/usr/bin/env python3
 """
-Panorama Stitcher with cylindrical projection and loop closure correction.
+Custom Panorama Stitcher with cylindrical projection, loop closure correction, and edge fill.
+
+Usage:
+    python custom_pano_stitcher.py <input_folder> [-o output.png]
+
+Arguments:
+    input_folder    Folder containing rgb_*.png or IMG_*.jpeg/jpg files
+
+Options:
+    -o, --output    Output file path (default: custom_panorama.png)
+
+Examples:
+    python custom_pano_stitcher.py ./locations/becton/waypoint_1/flat
+    python custom_pano_stitcher.py ./my_images -o panorama.png
 """
 
 import argparse
@@ -22,15 +35,39 @@ class PanoramaStitcher:
         self.matcher = cv2.FlannBasedMatcher(index_params, search_params)
 
     def load_images(self, folder: str) -> List[np.ndarray]:
-        """Load and sort rgb_*.png images from the specified folder."""
+        """Load and sort images from the specified folder.
+        
+        Supports two patterns:
+        - rgb_*.png files (sorted by number)
+        - IMG_*.jpeg files (sorted by number)
+        """
         folder_path = Path(folder)
+        
+        # Try rgb_*.png pattern first
         rgb_files = sorted(
             list(folder_path.glob("rgb_*.png")),
             key=lambda x: int(re.search(r"rgb_(\d+)", x.name).group(1)),
         )
+        
+        # If no rgb files, try IMG_*.jpeg pattern
+        if not rgb_files:
+            img_files = sorted(
+                list(folder_path.glob("IMG_*.jpeg")),
+                key=lambda x: int(re.search(r"IMG_(\d+)", x.name).group(1)),
+            )
+            if img_files:
+                rgb_files = img_files
+            else:
+                # Also try .jpg extension
+                img_files = sorted(
+                    list(folder_path.glob("IMG_*.jpg")),
+                    key=lambda x: int(re.search(r"IMG_(\d+)", x.name).group(1)),
+                )
+                if img_files:
+                    rgb_files = img_files
 
         if not rgb_files:
-            print("ERROR: No rgb_*.png files found.")
+            print("ERROR: No rgb_*.png or IMG_*.jpeg files found.")
             sys.exit(1)
 
         print(f"Loading {len(rgb_files)} images...")
@@ -216,16 +253,30 @@ class PanoramaStitcher:
             f"Iterative Trimming Crop to {x_max - x_min}x{y_max - y_min}"
         )
         return final_panorama
+    
+    def fill_black_edges(self, panorama: np.ndarray) -> np.ndarray:
+        """Fill black edges using OpenCV inpainting."""
+        gray = cv2.cvtColor(panorama, cv2.COLOR_BGR2GRAY)
+        black_mask = (gray < 5).astype(np.uint8) * 255
+
+        if np.sum(black_mask) == 0:
+            print("No black edges to fill.")
+            return panorama
+
+        # Inpaint all black regions
+        result = cv2.inpaint(panorama, black_mask, inpaintRadius=7, flags=cv2.INPAINT_TELEA)
+
+        print("Filled black edges using inpainting.")
+        return result
 
     def stitch(
-        self, images: List[np.ndarray], focal_length: float = None
+        self, images: List[np.ndarray]
     ) -> np.ndarray:
         """Stitch images into a cylindrical panorama."""
         height, width = images[0].shape[:2]
 
-        if focal_length is None:
-            focal_length = width / (2 * np.tan(np.radians(69 / 2)))
-            print(f"Auto-calculated Focal Length: {focal_length:.1f}px")
+        focal_length = width / (2 * np.tan(np.radians(69 / 2)))
+        print(f"Auto-calculated Focal Length: {focal_length:.1f}px")
 
         print("Warping images...")
         warped_data = [
@@ -286,7 +337,7 @@ class PanoramaStitcher:
             global_weights[roi_y, roi_x] = current_weights
 
         panorama = self.correct_loop_closure(panorama)
-        panorama = self.trim_black_borders(panorama)
+        panorama = self.fill_black_edges(panorama)
 
         return panorama
 
@@ -294,7 +345,7 @@ class PanoramaStitcher:
 def main():
     """Main entry point for command-line interface."""
     parser = argparse.ArgumentParser(
-        description="Panorama Stitcher with robust cropping and loop correction."
+        description="Custom panorama stitcher."
     )
     parser.add_argument(
         "input_folder", help="Folder containing rgb_X.png files."
@@ -302,14 +353,8 @@ def main():
     parser.add_argument(
         "-o",
         "--output",
-        default="sharp_result_inner_crop.png",
+        default="custom_panorama.png",
         help="Output file path.",
-    )
-    parser.add_argument(
-        "--focal",
-        type=float,
-        default=None,
-        help="Force a specific focal length in pixels.",
     )
     args = parser.parse_args()
 
@@ -320,7 +365,7 @@ def main():
         print("Stitching failed: No valid images loaded.")
         return
 
-    result = stitcher.stitch(images, args.focal)
+    result = stitcher.stitch(images)
     if result is not None:
         cv2.imwrite(args.output, result)
         print(f"Success! Saved to {args.output}")
@@ -330,3 +375,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
