@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 
-depth = np.load("locations/tsai_city/depth_0.npy")
+depth = np.load("locations/tsai_city/waypoint_1/flat/depth_9.npy")
 
 near = 200     # mm
 far = 10000     # mm

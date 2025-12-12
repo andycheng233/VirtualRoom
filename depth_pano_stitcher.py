@@ -331,8 +331,18 @@ def main():
     print(f"Saved: {args.output} ({panorama.shape[1]}x{panorama.shape[0]})")
 
     if args.depth_output and pano_depth is not None:
-        np.save(args.depth_output, pano_depth)
-        print(f"Saved depth: {args.depth_output}")
+        if args.depth_output.endswith('.png'):
+            # Convert to 8-bit for web: normalize to 200mm-10000mm range
+            # 0=far (dark), 255=close (bright)
+            depth_f = pano_depth.astype(np.float32)
+            depth_f = np.clip(depth_f, 200, 10000)
+            depth_f = (depth_f - 200) / (10000 - 200)
+            depth_8bit = (255 * (1 - depth_f)).astype(np.uint8)
+            cv2.imwrite(args.depth_output, depth_8bit)
+            print(f"Saved depth PNG (8-bit): {args.depth_output}")
+        else:
+            np.save(args.depth_output, pano_depth)
+            print(f"Saved depth NPY: {args.depth_output}")
 
 
 if __name__ == "__main__":
