@@ -5,10 +5,8 @@ import os
 
 main_folder = "locations/"
 location = "tsai_city/"
-location_number = "waypoint_1/"
-angle = "angle_up/" # flat, angle_up, angle_down
 
-os.makedirs(main_folder + location + location_number + angle, exist_ok=True)
+os.makedirs(main_folder + location, exist_ok=True)
 
 image_frames, depth_frames = [], []
 first_frame, latest_frame = None, None
@@ -44,7 +42,7 @@ except Exception as e:
 
 align_to = rs.stream.color
 align = rs.align(align_to)
-
+ 
 try:
     while True:
         frames = pipeline.wait_for_frames()
@@ -79,8 +77,8 @@ try:
         if key == 27:  # ESC
             print(len(image_frames))
             for i in range(len(image_frames)):
-                cv2.imwrite(main_folder + location + location_number + angle + "rgb_" + str(i) + ".png", image_frames[i])
-                np.save(main_folder + location + location_number + angle + "depth_" + str(i) + ".npy", depth_frames[i])
+                cv2.imwrite(main_folder + location  + "rgb_" + str(i) + ".png", image_frames[i])
+                np.save(main_folder + location + "depth_" + str(i) + ".npy", depth_frames[i])
             break
         elif key == ord(" "):
             print("Added Color and Depth Image")
