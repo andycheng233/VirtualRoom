@@ -23,7 +23,7 @@ function CylinderPanorama({ imageUrl }: CylinderPanoramaProps) {
     loader.load(imageUrl, (loadedTexture) => {
       loadedTexture.colorSpace = THREE.SRGBColorSpace;
       loadedTexture.wrapS = THREE.RepeatWrapping;
-      loadedTexture.repeat.x = -1; // Flip horizontally for inside view
+      loadedTexture.repeat.x = -1; 
       setTexture(loadedTexture);
     });
   }, [imageUrl]);
