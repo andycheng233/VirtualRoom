@@ -17,7 +17,7 @@ export const YALE_LOCATIONS: Location[] = [
     id: "morse-underground",
     name: "Morse/Stiles Underground",
     coordinates: { lat: 41.31264622701182, lng:-72.93057930400711},
-    panoramaPath: "/panoramas/morse_custom_pano.png",
+    panoramaPath: "/panoramas/morse_stiles_custom_pano.png",
   },
   {
     id: "berk-courtyard",
@@ -36,12 +36,6 @@ export const YALE_LOCATIONS: Location[] = [
     name: "Franklin Courtyard",
     coordinates: { lat: 41.31503557418407, lng: -72.92562036132698 },
     panoramaPath: "/panoramas/frank_custom_pano.png",
-  },
-  {
-    id: "17-hillhouse",
-    name: "17 Hillhouse Avenue",
-    coordinates: { lat: 41.312729976062066, lng: -72.92348827420781},
-    panoramaPath: "/panoramas/hillhouse_custom_pano.png",
   },
   {
     id: "hq",
