@@ -4,12 +4,13 @@ import cv2
 import os
 
 main_folder = "locations/"
-location = "tsai_city/"
+location = "hq/"
 
 os.makedirs(main_folder + location, exist_ok=True)
 
 image_frames, depth_frames = [], []
 first_frame, latest_frame = None, None
+offset = 0
 
 # --- Check if any RealSense devices are visible ---
 ctx = rs.context()
@@ -77,8 +78,8 @@ try:
         if key == 27:  # ESC
             print(len(image_frames))
             for i in range(len(image_frames)):
-                cv2.imwrite(main_folder + location  + "rgb_" + str(i) + ".png", image_frames[i])
-                np.save(main_folder + location + "depth_" + str(i) + ".npy", depth_frames[i])
+                cv2.imwrite(main_folder + location  + "rgb_" + str(i +offset) + ".png", image_frames[i])
+                np.save(main_folder + location + "depth_" + str(i + offset) + ".npy", depth_frames[i])
             break
         elif key == ord(" "):
             print("Added Color and Depth Image")

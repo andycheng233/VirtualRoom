@@ -13,6 +13,12 @@ export const YALE_LOCATIONS: Location[] = [
     coordinates: { lat: 41.312466, lng: -72.9251862 },
     panoramaPath: "/panoramas/becton_custom_pano.png",
   },
+  {
+    id: "morse-underground",
+    name: "Morse Underground",
+    coordinates: { lat: 41.312466, lng: -72.9251862 },
+    panoramaPath: "/panoramas/morse_custom_pano.png",
+  },
 ];
 
 export const YALE_MAP_CENTER = { lat: 41.3111, lng: -72.9267 };
