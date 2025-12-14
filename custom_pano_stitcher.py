@@ -231,28 +231,6 @@ class PanoramaStitcher:
         if np.any(mask[y_min:y_max, x_max - 1] == 0):
             return True
         return False
-
-    def trim_black_borders(self, panorama: np.ndarray) -> np.ndarray:
-        """Iteratively crop black borders from panorama until clean rectangle is achieved."""
-        height, width = panorama.shape[:2]
-
-        x_min, y_min = 0, 0
-        x_max, y_max = width, height
-
-        gray = cv2.cvtColor(panorama, cv2.COLOR_BGR2GRAY)
-        _, mask = cv2.threshold(gray, 1, 255, cv2.THRESH_BINARY)
-
-        while self.check_black_on_border(mask, x_min, y_min, x_max, y_max):
-            x_min += 2
-            y_min += 1
-            x_max -= 2
-            y_max -= 1
-
-        final_panorama = panorama[y_min:y_max, x_min:x_max]
-        print(
-            f"Iterative Trimming Crop to {x_max - x_min}x{y_max - y_min}"
-        )
-        return final_panorama
     
     def fill_black_edges(self, panorama: np.ndarray) -> np.ndarray:
         """Fill black edges using OpenCV inpainting."""

@@ -232,14 +232,7 @@ When stitching 360° panoramas, the right edge should seamlessly connect with th
 3. Match features and compute homography using RANSAC
 4. Apply perspective warp to correct misalignment
 
-#### 6. Black Border Removal (`trim_black_borders`)
-
-Removes black borders created during cylindrical warping and stitching:
-- Iteratively checks all four borders
-- Trims 2px horizontally, 1px vertically per iteration
-- Continues until a clean rectangle is achieved
-
-#### 7. Edge Inpainting (`fill_black_edges`)
+#### 6. Edge Inpainting (`fill_black_edges`)
 
 Fills remaining small black gaps using the Telea inpainting algorithm:
 - Creates mask of near-black pixels (grayscale < 5)
