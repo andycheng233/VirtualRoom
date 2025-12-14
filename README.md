@@ -445,7 +445,7 @@ Uses Mapbox GL for interactive maps:
 ## Getting Started
 
 ### Wanna just play?
-Play Yale GeoGuessr online through this link!
+Play Yale GeoGuessr online through this link: https://yale-geoguessr.vercel.app/!
 
 
 ### Prerequisites
