@@ -444,6 +444,10 @@ Uses Mapbox GL for interactive maps:
 
 ## Getting Started
 
+### Wanna just play?
+Play Yale GeoGuessr online through this link!
+
+
 ### Prerequisites
 
 - Python 3.8+
