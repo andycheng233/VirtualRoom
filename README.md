@@ -11,11 +11,12 @@ A GeoGuessr-style web application for Yale campus that allows users to guess loc
 1. [Project Overview](#project-overview)
 2. [Tech Stack](#tech-stack)
 3. [Project Structure](#project-structure)
-4. [Custom Panorama Stitcher](#custom-panorama-stitcher)
-5. [Depth Panorama Stitcher](#depth-panorama-stitcher)
-6. [Frontend Architecture](#frontend-architecture)
-7. [Game Mechanics](#game-mechanics)
-8. [Getting Started](#getting-started)
+4. [Image Capture Script](#image-capture-script)
+5. [Custom Panorama Stitcher](#custom-panorama-stitcher)
+6. [Depth Panorama Stitcher](#depth-panorama-stitcher)
+7. [Frontend Architecture](#frontend-architecture)
+8. [Game Mechanics](#game-mechanics)
+9. [Getting Started](#getting-started)
 
 ---
 
@@ -88,6 +89,50 @@ VirtualRoom/
 ```
 
 ---
+
+## Image Capture Script
+
+**File:** `image_collect.py`
+
+Captures synchronized **RGB + Depth** frames from an **Intel RealSense** camera (e.g., D435i) while you rotate the camera around a fixed point. Frames are **aligned to the color stream** and saved in a location folder for stitching.
+
+### Requirements
+- Intel RealSense camera + librealsense / `pyrealsense2`
+- OpenCV (`cv2`), NumPy
+- **Windows or Linux recommended** for RealSense depth streaming
+
+### Usage
+
+1. Set the output folder at the top of the script:
+```python
+main_folder = "locations/"
+location = "hq/"
+offset = 0 
+```
+
+2. Run: 
+```bash
+python image_collect.py
+```
+
+### Controls
+- Space: capture a frame pair (RGB + depth)
+- ESC: save all captured frames to disk and exit
+
+### Output Format
+Saved to:
+```css
+locations/<location>/
+  rgb_<i+offset>.png
+  depth_<i+offset>.npy
+```
+- `rgb_*.png` — color frame (BGR)
+- `depth_*.npy` — raw depth array (typically millimeters)
+
+### Notes
+- The script checks for connected RealSense devices before starting.
+- Depth is aligned to color using `rs.align(rs.stream.color)`, ensuring pixel-wise correspondence.
+- For best results, capture 25-50 frames with strong overlap while rotating smoothly about a fixed point.
 
 ## Custom Panorama Stitcher
 
