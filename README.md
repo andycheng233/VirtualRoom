@@ -1,4 +1,4 @@
-# VirtualRoom - Yale GeoGuessr
+# Yale GeoGuessr
 
 A GeoGuessr-style web application for Yale campus that allows users to guess locations from 360-degree panoramic images. This project combines custom panorama stitching (Computer Vision) with an interactive React-based frontend.
 
@@ -22,7 +22,7 @@ A GeoGuessr-style web application for Yale campus that allows users to guess loc
 
 ## Project Overview
 
-VirtualRoom creates an immersive location-guessing game using custom-stitched 360-degree panoramas from Yale campus locations. The workflow is:
+Yale GeoGuessr creates an immersive location-guessing game using custom-stitched 360-degree panoramas from Yale campus locations. The workflow is:
 
 1. **Capture** - Collect sequential images by rotating a camera around a fixed point
 2. **Stitch** - Use custom Python scripts to create seamless cylindrical panoramas
@@ -48,7 +48,7 @@ VirtualRoom creates an immersive location-guessing game using custom-stitched 36
 ## Project Structure
 
 ```
-VirtualRoom/
+Yale GeoGuessr/
 ├── custom_pano_stitcher.py       # Main panorama stitching script
 ├── cv2_stitcher.py               # OpenCV built-in stitcher (alternative)
 ├── depth_pano_stitcher.py        # Depth-based panorama stitching
